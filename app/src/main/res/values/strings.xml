@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ALSECO</string>
+    <string name="alseco_utilities">ALSECO UTILITIES</string>
+    <string name="power">Power</string>
+    <string name="water_in">Water in</string>
+    <string name="water_out">Water out</string>
+    <string name="gas">Gas</string>
+    <string name="vdgo">VDGO</string>
+    <string name="tbo">TBO</string>
+    <string name="land_cess">Land cess</string>
+    <string name="rate">rate</string>
+    <string name="last">last</string>
+    <string name="previous">previous</string>
+    <string name="amount">amount</string>
+    <string name="payment">payment</string>
+    <string name="total">Total:  %s</string>
+</resources>
