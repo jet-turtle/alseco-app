@@ -1,15 +1,76 @@
 package kz.rusmen.alseco.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kz.rusmen.alseco.AlsecoApplication
+import kz.rusmen.alseco.data.UserPreferencesRepository
+import java.time.Instant
+import java.time.ZoneId
 import kotlin.math.round
 import kotlin.math.roundToInt
 
-class AlsecoViewModel : ViewModel() {
+@RequiresApi(Build.VERSION_CODES.O)
+class AlsecoViewModel(
+    private val userPreferencesRepository: UserPreferencesRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(AlsecoInputUiState())
     val uiState = _uiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            userPreferencesRepository.userPreferences
+                .take(1)
+                .collect { savedData ->
+                    val processedData = checkAndRotateMonth(savedData)
+                    _uiState.value = processedData
+                }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun checkAndRotateMonth(state: AlsecoInputUiState): AlsecoInputUiState {
+        if (state.updatedAt == 0L) return state
+
+        val zone = ZoneId.systemDefault()
+        val lastUpdate = Instant.ofEpochMilli(state.updatedAt).atZone(zone)
+        val now = Instant.now().atZone(zone)
+
+        val isNewMonth = lastUpdate.month != now.month || lastUpdate.year != now.year
+
+        return if (isNewMonth) {
+            state.copy(
+                powerPrevInput = state.powerLastInput,
+                powerLastInput = "",
+
+                waterInPrevInput = state.waterInLastInput,
+                waterInLastInput = "",
+
+                gasPrevInput = state.gasLastInput,
+                gasLastInput = "",
+
+                updatedAt = System.currentTimeMillis()
+            )
+        } else {
+            state
+        }
+    }
+
+    fun saveStateDataStore() {
+        viewModelScope.launch {
+            userPreferencesRepository.saveUserPreference(_uiState.value)
+        }
+    }
 
     fun updateField(field: Field, newValue: String) {
         _uiState.update { currentState ->
@@ -102,6 +163,15 @@ class AlsecoViewModel : ViewModel() {
                 gasLastInput = "",
                 gasPrevInput = ""
             )
+        }
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as AlsecoApplication)
+                AlsecoViewModel(application.userPreferencesRepository)
+            }
         }
     }
 }

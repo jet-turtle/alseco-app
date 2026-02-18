@@ -1,5 +1,7 @@
 package kz.rusmen.alseco.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -42,10 +44,11 @@ import kz.rusmen.alseco.R
 import kz.rusmen.alseco.ui.theme.ALSECOTheme
 import kotlin.math.round
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
 fun AlsecoLayout(
-    viewModel: AlsecoViewModel = viewModel()
+    viewModel: AlsecoViewModel = viewModel(factory = AlsecoViewModel.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -362,7 +365,7 @@ fun SingleBlock(
                     .wrapContentHeight(align = Alignment.CenterVertically)
             )
             TextField(
-                value = if (rateInput.isBlank()) "" else rateInputDouble.toString(),
+                value = rateInput,
                 singleLine = true,
                 onValueChange = onValueChange,
                 label = { Text(stringResource(R.string.rate)) },
@@ -390,6 +393,7 @@ fun SingleBlock(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(
     showBackground = true,
     showSystemUi = true

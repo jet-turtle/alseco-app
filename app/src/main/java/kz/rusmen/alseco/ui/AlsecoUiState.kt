@@ -13,5 +13,6 @@ data class AlsecoInputUiState(
     val gasPrevInput: String = "",
     val vdgoRateInput: String = "",
     val tboRateInput: String = "",
-    val landCessRateInput: String = ""
+    val landCessRateInput: String = "",
+    val updatedAt: Long = 0L
 )
