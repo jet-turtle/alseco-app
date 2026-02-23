@@ -22,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -139,6 +140,7 @@ fun AlsecoLayout(
             }
         )
         MeterBlock(
+            isWaterOut = true,
             title = R.string.water_out,
             titleColor = R.color.blue,
             rateInput = uiState.waterOutRateInput,
@@ -230,6 +232,7 @@ fun AlsecoLayout(
 
 @Composable
 fun MeterBlock(
+    isWaterOut: Boolean = false,
     title: Int,
     titleColor: Int,
     rateInput: String,
@@ -296,9 +299,14 @@ fun MeterBlock(
         ) {
             TextField(
                 value = lastInput,
+                enabled = !isWaterOut,
                 singleLine = true,
                 onValueChange = onLastInputChange,
                 label = { Text(stringResource(R.string.last)) },
+                colors = TextFieldDefaults.colors(
+                    disabledTextColor = Color.Gray,
+                    disabledLabelColor = Color.DarkGray
+                ),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
@@ -309,9 +317,14 @@ fun MeterBlock(
             )
             TextField(
                 value = prevInput,
+                enabled = !isWaterOut,
                 singleLine = true,
                 onValueChange = onPrevInputChange,
                 label = { Text(stringResource(R.string.previous)) },
+                colors = TextFieldDefaults.colors(
+                    disabledTextColor = Color.Gray,
+                    disabledLabelColor = Color.DarkGray
+                ),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
