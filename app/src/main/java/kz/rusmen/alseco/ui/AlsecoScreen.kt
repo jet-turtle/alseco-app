@@ -53,7 +53,7 @@ fun AlsecoLayout(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    val powerPayment = viewModel.calculatePayment(uiState.powerLastInput, uiState.powerPrevInput, uiState.powerRateInput)
+    val powerPayment = viewModel.calculateMultiRatePayment(uiState.powerLastInput, uiState.powerPrevInput, uiState.powerRateInput)
     val waterInPayment = viewModel.calculateWaterInPayment(uiState.waterInLastInput, uiState.waterInPrevInput, uiState.waterInRateInput)
     val waterOutPayment = viewModel.calculatePayment(uiState.waterInLastInput, uiState.waterInPrevInput, uiState.waterOutRateInput)
     val gasPayment = viewModel.calculatePayment(uiState.gasLastInput, uiState.gasPrevInput, uiState.gasRateInput)
@@ -110,7 +110,7 @@ fun AlsecoLayout(
             lastInput = uiState.powerLastInput,
             prevInput = uiState.powerPrevInput,
             amount = viewModel.calculateAmount(uiState.powerLastInput, uiState.powerPrevInput),
-            payment = viewModel.calculatePayment(uiState.powerLastInput, uiState.powerPrevInput, uiState.powerRateInput),
+            payment = powerPayment,
             onRateInputChange = { newValue ->
                 viewModel.updateField(Field.POWER_RATE, newValue)
             },
@@ -128,7 +128,7 @@ fun AlsecoLayout(
             lastInput = uiState.waterInLastInput,
             prevInput = uiState.waterInPrevInput,
             amount = viewModel.calculateAmount(uiState.waterInLastInput, uiState.waterInPrevInput),
-            payment = viewModel.calculateWaterInPayment(uiState.waterInLastInput, uiState.waterInPrevInput, uiState.waterInRateInput),
+            payment = waterInPayment,
             onRateInputChange = { newValue ->
                 viewModel.updateField(Field.WATER_IN_RATE, newValue)
             },
@@ -147,7 +147,7 @@ fun AlsecoLayout(
             lastInput = uiState.waterInLastInput,
             prevInput = uiState.waterInPrevInput,
             amount = viewModel.calculateAmount(uiState.waterInLastInput, uiState.waterInPrevInput),
-            payment = viewModel.calculatePayment(uiState.waterInLastInput, uiState.waterInPrevInput, uiState.waterOutRateInput),
+            payment = waterOutPayment,
             onRateInputChange = { newValue ->
                 viewModel.updateField(Field.WATER_OUT_RATE, newValue)
             },
@@ -165,7 +165,7 @@ fun AlsecoLayout(
             lastInput = uiState.gasLastInput,
             prevInput = uiState.gasPrevInput,
             amount = viewModel.calculateAmount(uiState.gasLastInput, uiState.gasPrevInput),
-            payment = viewModel.calculatePayment(uiState.gasLastInput, uiState.gasPrevInput, uiState.gasRateInput),
+            payment = gasPayment,
             onRateInputChange = { newValue ->
                 viewModel.updateField(Field.GAS_RATE, newValue)
             },

@@ -153,6 +153,40 @@ class AlsecoViewModel(
         return payment
     }
 
+    fun calculateMultiRatePayment(last: String, prev: String, rates: String, personAmount: Int = 4): Double {
+        val splitRates = rates.trim().split("\\s+".toRegex())
+
+        val rate1 = splitRates.getOrNull(0)?.toDoubleOrNull() ?: 0.0
+        val rate2 = splitRates.getOrNull(1)?.toDoubleOrNull() ?: rate1
+        val rate3 = splitRates.getOrNull(2)?.toDoubleOrNull() ?: rate2
+
+        val lastVal = last.toDoubleOrNull() ?: 0.0
+        val prevVal = prev.toDoubleOrNull() ?: 0.0
+        val volume = lastVal - prevVal
+
+        if (volume <= 0) return 0.0
+
+        var level1 = 0.0
+        var level2 = 0.0
+        var level3 = 0.0
+
+        if (volume > personAmount * 160) {
+            level1 = personAmount * 90 * rate1
+            level2 = ((personAmount * 160) - (personAmount * 90)) * rate2
+            level3 = (volume - personAmount * 160) * rate3
+        } else if (volume > personAmount * 90) {
+            level1 = personAmount * 90 * rate1
+            level2 = (volume - personAmount * 90) * rate2
+        } else {
+            level1 = volume * rate1
+        }
+
+        var payment = level1 + level2 + level3
+        payment = round(payment * 100) / 100
+
+        return payment
+    }
+
     fun clear() {
         _uiState.update { currentState ->
             currentState.copy(
