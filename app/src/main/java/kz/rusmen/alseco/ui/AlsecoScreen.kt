@@ -281,7 +281,7 @@ fun MeterBlock(
             Text(
                 text = amount.toString(),
                 fontWeight = FontWeight.Bold,
-                color = colorResource(R.color.teal_700),
+                color = Color.Gray,
                 textAlign = TextAlign.End,
                 modifier = Modifier
                     .weight(0.9f)
