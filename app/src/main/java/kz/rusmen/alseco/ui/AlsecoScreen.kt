@@ -218,7 +218,7 @@ fun AlsecoLayout(
                 )
             }
             Text(
-                text = stringResource(R.string.total, totalPayment.toString()),
+                text = stringResource(R.string.total, "%.2f".format(totalPayment)),
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.End,
@@ -321,7 +321,7 @@ fun MeterBlock(
                     .fillMaxHeight()
             )
             Text(
-                text = payment.toString(),
+                text = "%.2f".format(payment),
                 fontWeight = FontWeight.Bold,
                 color = colorResource(R.color.teal_700),
                 textAlign = TextAlign.End,
@@ -378,7 +378,7 @@ fun SingleBlock(
                     .fillMaxHeight()
             )
             Text(
-                text = if (rateInput.isBlank()) "" else rateInputDouble.toString(),
+                text = if (rateInput.isBlank()) "" else "%.2f".format(rateInputDouble),
                 fontWeight = FontWeight.Bold,
                 color = colorResource(R.color.teal_700),
                 textAlign = TextAlign.End,
