@@ -271,7 +271,7 @@ fun MeterBlock(
                 onValueChange = onRateInputChange,
                 label = { Text(stringResource(R.string.rate)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number
+                    keyboardType = if (title == R.string.power || title == R.string.water_in) KeyboardType.Text else KeyboardType.Number
                 ),
                 modifier = Modifier
                     .weight(1.0f)
