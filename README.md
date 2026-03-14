@@ -1,6 +1,7 @@
 Alseco Utilities
 
 A handy Android application designed to streamline utility bill calculations and simplify the process of filling out payment forms.
+
 Key Features
 
     Simplified Calculation: Quick and intuitive entry of utility meter readings.
