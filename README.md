@@ -20,5 +20,5 @@ Tech Stack
     Data: Preferences Datastore for fast and efficient local data storage.
 
 Screenshot
-| :---: |
-| ![Main](screenshots/alseco_300.jpg) |
+
+![Main](screenshots/alseco_300.jpg)
