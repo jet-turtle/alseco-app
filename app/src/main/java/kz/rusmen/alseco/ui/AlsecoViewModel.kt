@@ -137,9 +137,9 @@ class AlsecoViewModel(
             level1 = personAmount * 3 * rate1
             level2 = ((personAmount * 5) - (personAmount * 3)) * rate2
             level3 = (volume - personAmount * 5) * rate3
-        } else if (volume > 3) {
+        } else if (volume > personAmount * 3) {
             level1 = personAmount * 3 * rate1
-            level2 = (volume - 3) * rate2
+            level2 = (volume - personAmount * 3) * rate2
         } else {
             level1 = volume * rate1
         }
