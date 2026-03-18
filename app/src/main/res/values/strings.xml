@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">ALSECO</string>
     <string name="alseco_utilities">ALSECO UTILITIES</string>
+    <string name="occupants">Occupants</string>
+    <string name="quantity">No. of persons</string>
     <string name="power">Power</string>
     <string name="water_in">Water in</string>
     <string name="water_out">Water out</string>

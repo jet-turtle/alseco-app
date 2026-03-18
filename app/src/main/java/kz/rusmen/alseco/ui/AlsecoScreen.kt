@@ -53,8 +53,8 @@ fun AlsecoLayout(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    val powerPayment = viewModel.calculateMultiRatePayment(uiState.powerLastInput, uiState.powerPrevInput, uiState.powerRateInput)
-    val waterInPayment = viewModel.calculateWaterInPayment(uiState.waterInLastInput, uiState.waterInPrevInput, uiState.waterInRateInput)
+    val powerPayment = viewModel.calculateMultiRatePayment(uiState.powerLastInput, uiState.powerPrevInput, uiState.powerRateInput, uiState.occupantsInput)
+    val waterInPayment = viewModel.calculateWaterInPayment(uiState.waterInLastInput, uiState.waterInPrevInput, uiState.waterInRateInput, uiState.occupantsInput)
     val waterOutPayment = viewModel.calculatePayment(uiState.waterInLastInput, uiState.waterInPrevInput, uiState.waterOutRateInput)
     val gasPayment = viewModel.calculatePayment(uiState.gasLastInput, uiState.gasPrevInput, uiState.gasRateInput)
 
@@ -103,6 +103,12 @@ fun AlsecoLayout(
                 .padding(16.dp)
         )
 
+        Occupants(
+            numberOfOccupants = uiState.occupantsInput,
+            onValueChange = { newValue ->
+                viewModel.updateField(Field.OCCUPANTS, newValue)
+            }
+        )
         MeterBlock(
             title = R.string.power,
             titleColor = R.color.green,
@@ -231,6 +237,49 @@ fun AlsecoLayout(
 }
 
 @Composable
+fun Occupants(
+    numberOfOccupants: String,
+    onValueChange: (String) -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(bottom = 12.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .height(54.dp)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.occupants),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = colorResource(R.color.teal_700),
+                modifier = Modifier
+                    .weight(1.0f)
+                    .border(width = 1.dp, color = colorResource(R.color.teal_700))
+                    .padding(8.dp)
+                    .fillMaxHeight()
+                    .wrapContentHeight(align = Alignment.CenterVertically)
+            )
+            TextField(
+                value = numberOfOccupants,
+                singleLine = true,
+                onValueChange = onValueChange,
+                label = { Text(stringResource(R.string.quantity)) },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
+                modifier = Modifier
+                    .weight(1.0f)
+                    .border(width = 1.dp, color = colorResource(R.color.teal_700))
+                    .fillMaxHeight()
+            )
+        }
+    }
+}
+
+@Composable
 fun MeterBlock(
     isWaterOut: Boolean = false,
     title: Int,
@@ -271,7 +320,7 @@ fun MeterBlock(
                 onValueChange = onRateInputChange,
                 label = { Text(stringResource(R.string.rate)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = if (title == R.string.power || title == R.string.water_in) KeyboardType.Text else KeyboardType.Number
+                    keyboardType = if (title == R.string.power || title == R.string.water_in) KeyboardType.Text else KeyboardType.Decimal
                 ),
                 modifier = Modifier
                     .weight(1.0f)
@@ -383,7 +432,7 @@ fun SingleBlock(
                 onValueChange = onValueChange,
                 label = { Text(stringResource(R.string.rate)) },
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number
+                    keyboardType = KeyboardType.Decimal
                 ),
                 modifier = Modifier
                     .weight(1.0f)

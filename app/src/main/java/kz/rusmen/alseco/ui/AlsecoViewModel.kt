@@ -75,6 +75,7 @@ class AlsecoViewModel(
     fun updateField(field: Field, newValue: String) {
         _uiState.update { currentState ->
             when (field) {
+                Field.OCCUPANTS -> currentState.copy(occupantsInput = newValue)
                 Field.POWER_RATE -> currentState.copy(powerRateInput = newValue)
                 Field.POWER_LAST -> currentState.copy(powerLastInput = newValue)
                 Field.POWER_PREV -> currentState.copy(powerPrevInput = newValue)
@@ -106,7 +107,9 @@ class AlsecoViewModel(
         return payment
     }
 
-    fun calculateWaterInPayment(last: String, prev: String, rates: String): Double {
+    fun calculateWaterInPayment(last: String, prev: String, rates: String, occupants: String): Double {
+
+        val personAmount = occupants.toIntOrNull() ?: 1
         val splitRates = rates.trim().split("\\s+".toRegex())
 
         val rate1 = splitRates.getOrNull(0)?.toDoubleOrNull() ?: 0.0
@@ -119,41 +122,37 @@ class AlsecoViewModel(
         val volume = lastVal - prevVal
 
         if (volume <= 0) return 0.0
-        var payment = 0.0
 
-        when {
-            volume <= 12.0 -> {
-                val sum = volume * rate1
-                payment += sum
-            }
-            volume in 13.0..20.0 -> {
-                payment += round(12.0 * rate1 * 100) / 100
+        var level1 = 0.0
+        var level2 = 0.0
+        var level3 = 0.0
+        var level4 = 0.0
 
-                val sum = (volume - 12.0) * rate2
-                payment += sum
-            }
-            volume in 21.0..40.0 -> {
-                payment += round(12.0 * rate1 * 100) / 100
-                payment += round(8.0 * rate2 * 100) / 100
-
-                val sum = (volume - 20.0) * rate3
-                payment += sum
-            }
-            else -> {
-                payment += round(12.0 * rate1 * 100) / 100
-                payment += round(8.0 * rate2 * 100) / 100
-                payment += round(20.0 * rate3 * 100) / 100
-
-                val sum = (volume - 40.0) * rate4
-                payment += sum
-            }
+        if (volume > personAmount * 10) {
+            level1 = personAmount * 3 * rate1
+            level2 = ((personAmount * 5) - (personAmount * 3)) * rate2
+            level3 = ((personAmount * 10) - (personAmount * 5)) * rate3
+            level4 = (volume - personAmount * 10) * rate4
+        } else if (volume > personAmount * 5) {
+            level1 = personAmount * 3 * rate1
+            level2 = ((personAmount * 5) - (personAmount * 3)) * rate2
+            level3 = (volume - personAmount * 5) * rate3
+        } else if (volume > 3) {
+            level1 = personAmount * 3 * rate1
+            level2 = (volume - 3) * rate2
+        } else {
+            level1 = volume * rate1
         }
+
+        var payment = level1 + level2 + level3 + level4
         payment = round(payment * 100) / 100
 
         return payment
     }
 
-    fun calculateMultiRatePayment(last: String, prev: String, rates: String, personAmount: Int = 4): Double {
+    fun calculateMultiRatePayment(last: String, prev: String, rates: String, occupants: String): Double {
+
+        val personAmount = occupants.toIntOrNull() ?: 1
         val splitRates = rates.trim().split("\\s+".toRegex())
 
         val rate1 = splitRates.getOrNull(0)?.toDoubleOrNull() ?: 0.0

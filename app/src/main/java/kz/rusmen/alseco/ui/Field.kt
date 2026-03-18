@@ -1,6 +1,7 @@
 package kz.rusmen.alseco.ui
 
 enum class Field {
+    OCCUPANTS,
     POWER_RATE,
     POWER_LAST,
     POWER_PREV,

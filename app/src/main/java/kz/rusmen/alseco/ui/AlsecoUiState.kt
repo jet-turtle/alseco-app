@@ -1,6 +1,7 @@
 package kz.rusmen.alseco.ui
 
 data class AlsecoInputUiState(
+    val occupantsInput: String = "",
     val powerRateInput: String = "",
     val powerLastInput: String = "",
     val powerPrevInput: String = "",

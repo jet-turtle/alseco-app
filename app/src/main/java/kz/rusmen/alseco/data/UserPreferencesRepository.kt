@@ -17,6 +17,7 @@ class UserPreferencesRepository(
     private val dataStore: DataStore<Preferences>
 ) {
     private companion object {
+        val OCCUPANTS = stringPreferencesKey("occupants")
         val POWER_RATE = stringPreferencesKey("power_rate")
         val POWER_LAST = stringPreferencesKey("power_last")
         val POWER_PREV = stringPreferencesKey("power_prev")
@@ -36,6 +37,7 @@ class UserPreferencesRepository(
 
     suspend fun saveUserPreference(alsecoInputUiState: AlsecoInputUiState) {
         dataStore.edit { preferences ->
+            preferences[OCCUPANTS] = alsecoInputUiState.occupantsInput
             preferences[POWER_RATE] = alsecoInputUiState.powerRateInput
             preferences[POWER_LAST] = alsecoInputUiState.powerLastInput
             preferences[POWER_PREV] = alsecoInputUiState.powerPrevInput
@@ -64,6 +66,7 @@ class UserPreferencesRepository(
         }
         .map { preferences ->
             AlsecoInputUiState(
+                occupantsInput = preferences[OCCUPANTS] ?: "",
                 powerRateInput = preferences[POWER_RATE] ?: "",
                 powerLastInput = preferences[POWER_LAST] ?: "",
                 powerPrevInput = preferences[POWER_PREV] ?: "",
