@@ -22,4 +22,6 @@ Tech Stack
 
 Screenshot
 
-![Main](screenshots/alseco_300.jpg)
+| Light Theme | Dark Theme |
+| :---: | :---: |
+| ![Main](images/r1.jpg) | ![Create](images/r2.jpg) |
