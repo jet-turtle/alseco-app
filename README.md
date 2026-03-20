@@ -22,9 +22,20 @@ You can download the latest version of the app here:
 
 ## 📸 Screenshots
 
-| Light Theme | Dark Theme |
-| :---: | :---: |
-| ![Light](screenshots/a1.jpg) | ![Dark](screenshots/a2.jpg) |
+<table>
+  <tr>
+    <th align="center">Light Theme</th>
+    <th align="center">Dark Theme</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="screenshots/a1.jpg" width="300" alt="Light Theme">
+    </td>
+    <td align="center">
+      <img src="screenshots/a2.jpg" width="300" alt="Dark Theme">
+    </td>
+  </tr>
+</table>
 
 ---
 
