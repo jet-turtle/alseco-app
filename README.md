@@ -1,27 +1,34 @@
-Alseco Utilities
+# Alseco Utilities
 
 A handy Android application designed to streamline utility bill calculations and simplify the process of filling out payment forms.
 
-Key Features
+## 📥 Download
+You can download the latest version of the app here:
+[🚀 Download Latest APK](https://github.com/jet-turtle/alseco-app/releases/latest)
 
-    Simplified Calculation: Quick and intuitive entry of utility meter readings.
+---
 
-    Smart Data Handling: When a new billing period starts, current readings (last) are automatically moved to the previous period (prev), clearing the current fields for new input.
+## ✨ Key Features
+* **Simplified Calculation**: Quick and intuitive entry of utility meter readings.
+* **Smart Data Transition**: When a new billing period starts, current readings automatically move to the "previous" fields, clearing the way for new input.
+* **Auto-Save**: All data is automatically saved via the `onPause` lifecycle event, ensuring no progress is lost.
+* **Theme Support**: Fully optimized for both Light and Dark modes.
 
-    Auto-Save: All entered data is automatically saved whenever the application is paused (onPause), ensuring no progress is lost.
+## 🛠 Tech Stack
+* **UI**: Jetpack Compose (Declarative UI)
+* **Architecture**: MVVM (Model-View-ViewModel)
+* **DI**: Manual Dependency Injection (for lightweight performance and transparency)
+* **Storage**: Preferences DataStore for efficient local data persistence
 
-Tech Stack
-
-    UI: Jetpack Compose (Declarative UI).
-
-    Architecture: MVVM (Model-View-ViewModel).
-
-    DI: Manual Dependency Injection (for lightweight performance and transparency).
-
-    Data: Preferences Datastore for fast and efficient local data storage.
-
-Screenshot
+## 📸 Screenshots
 
 | Light Theme | Dark Theme |
 | :---: | :---: |
 | ![Light](screenshots/a1.jpg) | ![Dark](screenshots/a2.jpg) |
+
+---
+
+## 🚀 Getting Started
+1. Download the APK from the [Releases](https://github.com/jet-turtle/alseco-app/releases) section.
+2. Install it on your Android device (ensure "Install from Unknown Sources" is enabled).
+3. Start tracking your utility bills with ease!
